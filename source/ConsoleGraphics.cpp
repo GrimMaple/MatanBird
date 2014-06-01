@@ -100,6 +100,11 @@ void SetProcessInterval(uint interval)
 
 bool MainLoop()
 {
+	return (!MainLoopStopped);
+}
+
+bool ProcessingTime()
+{
 	if(MainLoopStopped)
 		return false;
 

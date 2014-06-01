@@ -11,12 +11,12 @@ int main()
 	}
 
 	Init();
-	
-	while(true)
+
+	while(MainLoop())
 	{
 		char key;
 
-		if(MainLoop())
+		if(ProcessingTime())
 		{
 			Tick();
 

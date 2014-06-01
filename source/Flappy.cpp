@@ -2,16 +2,26 @@
 #include "Wall.h"
 #include "ConsoleGraphics.h"
 
-float Y;
-float YSpeed;
+enum BIRD_STATE
+{
+	BS_FLY = 0,
+	BS_PUSH
+};
 
-int   CntAfterPushed = 0;
-float IntegrallsTaken = 0;
+float      Y;
+float      YSpeed;
+BIRD_STATE BirdState;
+
+int CntAfterPushed = 0;
+int Score = 0;
 
 Wall  Walls[WALLS_AMOUNT];
 
+void CheckScore();
 void CheckWalls();
 bool CheckCollision();
+void CheckBirdState();
+void MoveWalls();
 
 void Tick()
 {
@@ -22,19 +32,14 @@ void Tick()
 	if(YSpeed < -MAX_SPEED)
 		YSpeed = -MAX_SPEED;
 
-	if(CntAfterPushed > 0)
-		CntAfterPushed++;
-	if(CntAfterPushed > 5)
-		CntAfterPushed = 0;
+	CheckBirdState();
 
 	tickCnt++;
 	if(tickCnt >= 5)
 	{
-		for(int i=0; i<WALLS_AMOUNT; i++)
-		{
-			Walls[i].x--;
-			tickCnt = 0;
-		}
+		MoveWalls();
+		CheckScore();
+		tickCnt = 0;
 	}
 
 	CheckWalls();
@@ -44,14 +49,15 @@ void Tick()
 	}
 
 	wchar title[256];
-	wsprintf(title, L"<- MATAN BIRD -|- You've already taken %d integralls! -|", (int)(IntegrallsTaken));
+	wsprintf(title, L"<- MATAN BIRD -|- You've already taken %d integralls! -|", Score);
 	SetConsoleTitle(title);
 }
 
 void PushBird()
 {
 	YSpeed = PUSH_VEL;
-	CntAfterPushed = 1; // deal with it
+	BirdState = BS_PUSH;
+	CntAfterPushed = 0;
 }
 
 void GenerateWall(int i)
@@ -62,7 +68,6 @@ void GenerateWall(int i)
 	
 	Walls[i].x = WORLD_WIDTH;
 	Walls[i].up = rand() % (WORLD_HEIGHT - gap) + 1;
-	//Walls[i].down = gapBottom+1;
 	Walls[i].down = WORLD_HEIGHT - gap - Walls[i].up;
 }
 
@@ -75,13 +80,18 @@ void InitWalls()
 	}
 }
 
+void MoveWalls()
+{
+	for(int i=0; i<WALLS_AMOUNT; i++)
+	{
+		Walls[i].x--;
+	}
+}
+
 void CheckWalls()
 {
 	for(int i=0; i<WALLS_AMOUNT; i++)
 	{
-		if(Walls[i].x == BIRD_X - 1)
-			IntegrallsTaken += 0.2f;
-
 		if(Walls[i].x < 0)
 		{
 			GenerateWall(i);
@@ -89,10 +99,20 @@ void CheckWalls()
 	}
 }
 
+void CheckScore()
+{
+	for(int i=0; i<WALLS_AMOUNT; i++)
+		if(Walls[i].x == BIRD_X - 1)
+			Score += 1;
+}
+
 bool CheckCollision()
 {
-	if(Y < 0 || Y >= WORLD_HEIGHT)
+	if(Y > WORLD_HEIGHT)
 		return true;
+
+	if(Y < 0)
+		Y = 0;
 
 	for(int i=0; i<WALLS_AMOUNT; i++)
 	{
@@ -105,10 +125,29 @@ bool CheckCollision()
 	return false;
 }
 
+void CheckBirdState()
+{
+	switch (BirdState)
+	{
+	case BS_FLY:
+		
+		break;
+
+	case BS_PUSH:
+		CntAfterPushed++;
+		if(CntAfterPushed >= PUSHING_TIME)
+		{
+			BirdState = BS_FLY;
+		}
+		break;
+	}
+}
+
 void InitGame()
 {
 	Y = START_Y;
 	YSpeed = 0.0f;
+	BirdState = BS_FLY;
 }
 
 void Init()
@@ -120,10 +159,16 @@ void Init()
 
 void DrawBird()
 {
-	if(CntAfterPushed == 0)
-		WritePosition(BIRD_X, Y, L"^V^");
-	else
+	switch (BirdState)
+	{
+	case BS_FLY:
 		WritePosition(BIRD_X, Y, L"vVv");
+		break;
+
+	case BS_PUSH:
+		WritePosition(BIRD_X, Y, L"^V^");
+		break;
+	}
 }
 
 void DrawWalls()

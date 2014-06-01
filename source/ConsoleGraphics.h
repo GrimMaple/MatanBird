@@ -13,6 +13,8 @@ void WritePosition(int x, int y, wchar *buffer);
 void WriteSymbol(int x, int y, wchar symbol);
 void SetPosition(int x, int y);
 void SetProcessInterval(uint interval);
+
+bool ProcessingTime();
 bool MainLoop();
 void StopMainLoop();
 
