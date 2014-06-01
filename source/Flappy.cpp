@@ -33,6 +33,7 @@ bool CheckCollision();
 void CheckBirdState();
 void MoveWalls();
 void Controlls();
+void PushBird();
 
 void PlayTick()
 {
@@ -81,7 +82,7 @@ void Controlls()
 void FailTick()
 {
 	Y -= YSpeed;
-	YSpeed -= G;
+	YSpeed -= G ;
 	if(Y >= WORLD_HEIGHT)
 		Y = WORLD_HEIGHT - 1;
 
