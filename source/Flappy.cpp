@@ -15,6 +15,13 @@ enum BIRD_STATE
 	BS_LOST
 };
 
+struct Wall
+{
+	int x;
+	int up;
+	int down;
+};
+
 GAME_STATE GameState;
 uint       TickCnt;
 

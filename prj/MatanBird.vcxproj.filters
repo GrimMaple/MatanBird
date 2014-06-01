@@ -23,8 +23,5 @@
     <ClInclude Include="..\source\Flappy.h">
       <Filter>source</Filter>
     </ClInclude>
-    <ClInclude Include="..\source\Wall.h">
-      <Filter>source</Filter>
-    </ClInclude>
   </ItemGroup>
 </Project>

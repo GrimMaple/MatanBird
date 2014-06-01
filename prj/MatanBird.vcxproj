@@ -18,7 +18,6 @@
   <ItemGroup>
     <ClInclude Include="..\source\ConsoleGraphics.h" />
     <ClInclude Include="..\source\Flappy.h" />
-    <ClInclude Include="..\source\Wall.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{8B104776-A5E4-47CE-B1AB-8C1A765B99D6}</ProjectGuid>
