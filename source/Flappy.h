@@ -6,7 +6,7 @@
 
 #define G                 0.05f
 #define MAX_SPEED         1.1f
-#define PUSH_VEL          0.6f
+#define PUSH_VEL          0.57f
 #define PROCESS_INTERVAL  33
 #define PUSHING_TIME      5       // influences only on animation
 
