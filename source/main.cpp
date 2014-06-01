@@ -14,21 +14,9 @@ int main()
 
 	while(MainLoop())
 	{
-		char key;
-
 		if(ProcessingTime())
 		{
 			Tick();
-
-			if(KeySinglePressed(&key))
-			{
-				if(key == ' ') // space
-					PushBird();
-
-				if(key == 27) // escape
-					break;
-
-			}
 				
 			Draw();
 			SwapBuffers();

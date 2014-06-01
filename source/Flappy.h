@@ -20,7 +20,6 @@
 
 void Init();
 void Tick();
-void PushBird();
 void Draw();
 
 #endif

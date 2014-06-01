@@ -32,6 +32,7 @@ void CheckWalls();
 bool CheckCollision();
 void CheckBirdState();
 void MoveWalls();
+void Controlls();
 
 void PlayTick()
 {
@@ -42,7 +43,6 @@ void PlayTick()
 
 	CheckBirdState();
 
-	
 	if(TickCnt % 5 == 0)
 	{
 		MoveWalls();
@@ -61,6 +61,21 @@ void PlayTick()
 	wchar title[256];
 	wsprintf(title, L"<- MATAN BIRD -|- You've already taken %d integralls! -|", Score);
 	SetConsoleTitle(title);
+
+	Controlls();
+}
+
+void Controlls()
+{
+	char key;
+	if(KeySinglePressed(&key))
+	{
+		if(key == ' ') // space
+			PushBird();
+
+		if(key == 27) // escape
+			StopMainLoop();
+	}
 }
 
 void FailTick()
