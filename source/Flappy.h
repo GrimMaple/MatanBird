@@ -1,7 +1,7 @@
 #ifndef _FLAPPY_H_
 #define _FLAPPY_H_
 
-#define START_Y           10
+#define START_Y           5
 #define BIRD_X            5
 
 #define G                 0.05f
@@ -18,8 +18,6 @@
 #define WALL_DIST         10
 #define WALLS_AMOUNT      8
 
-void Init();
-void Tick();
-void Draw();
+void Play();
 
 #endif

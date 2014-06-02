@@ -1,11 +1,11 @@
 #include "Flappy.h"
-#include "Wall.h"
 #include "ConsoleGraphics.h"
 
 enum GAME_STATE
 {
-	GS_PLAY,
-	GS_LOST
+	GS_PLAY = 0,
+	GS_LOST,
+	GS_END
 };
 
 enum BIRD_STATE
@@ -34,6 +34,9 @@ int Score = 0;
 
 Wall  Walls[WALLS_AMOUNT];
 
+void Draw();
+void Tick();
+void Init();
 void CheckScore();
 void CheckWalls();
 bool CheckCollision();
@@ -41,6 +44,22 @@ void CheckBirdState();
 void MoveWalls();
 void Controlls();
 void PushBird();
+
+void Play()
+{
+	Init();
+	DiscardProcessingTime();
+
+	while(MainLoop() && GameState != GS_END)
+	{
+		if(ProcessingTime())
+		{
+			Tick();
+			Draw();
+			SwapBuffers();
+		}
+	}
+}
 
 void PlayTick()
 {
@@ -67,10 +86,21 @@ void PlayTick()
 	}
 	 
 	wchar title[256];
-	wsprintf(title, L"<- MATAN BIRD -|- You've already taken %d integralls! -|", Score);
+	wsprintf(title, L"<- MATAN BIRD -|- You've already taken %d integrals! -|", Score);
 	SetConsoleTitle(title);
 
 	Controlls();
+}
+
+void LostTick()
+{
+	Y -= YSpeed;
+	YSpeed -= G ;
+	if(Y >= WORLD_HEIGHT)
+		Y = WORLD_HEIGHT - 1;
+
+	if(TickCnt > 50 )
+		GameState = GS_END;
 }
 
 void Controlls()
@@ -86,17 +116,6 @@ void Controlls()
 	}
 }
 
-void FailTick()
-{
-	Y -= YSpeed;
-	YSpeed -= G ;
-	if(Y >= WORLD_HEIGHT)
-		Y = WORLD_HEIGHT - 1;
-
-	if(TickCnt > 50 )
-		StopMainLoop();
-}
-
 void Tick()
 {
 	TickCnt++;
@@ -106,7 +125,7 @@ void Tick()
 		PlayTick();
 		break;
 	case GS_LOST:
-		FailTick();
+		LostTick();
 		break;
 	}
 }
@@ -207,6 +226,7 @@ void InitGame()
 	BirdState = BS_FLY;
 
 	TickCnt = 0;
+	Score = 0;
 }
 
 void Init()

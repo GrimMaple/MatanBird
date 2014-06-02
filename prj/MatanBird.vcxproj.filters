@@ -15,12 +15,21 @@
     <ClCompile Include="..\source\main.cpp">
       <Filter>source</Filter>
     </ClCompile>
+    <ClCompile Include="..\source\Menu.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\source\ConsoleGraphics.h">
       <Filter>source</Filter>
     </ClInclude>
     <ClInclude Include="..\source\Flappy.h">
+      <Filter>source</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\Menu.h">
+      <Filter>source</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\MenuData.h">
       <Filter>source</Filter>
     </ClInclude>
   </ItemGroup>

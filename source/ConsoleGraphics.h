@@ -8,17 +8,20 @@ typedef unsigned long uint;
 
 bool InitConsole(wchar *title);
 void SwapBuffers();
-void Write(wchar *buffer);
-void WritePosition(int x, int y, wchar *buffer);
+void Write(const wchar *buffer);
+void WritePosition(int x, int y, const wchar *buffer);
 void WriteSymbol(int x, int y, wchar symbol);
 void SetPosition(int x, int y);
 void SetProcessInterval(uint interval);
 
 bool ProcessingTime();
+void DiscardProcessingTime();
 bool MainLoop();
 void StopMainLoop();
+void ContinueMainLoop();
 
 bool KeyPressed(char *outKey);
 bool KeySinglePressed(char *outKey);
+void DiscardPressedKeys();
 
 #endif // CONSOLE_GRAPHICS_H_

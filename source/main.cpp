@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include "ConsoleGraphics.h"
 #include "Flappy.h"
+#include "Menu.h"
 
 int main()
 {
@@ -10,18 +11,7 @@ int main()
 		return 0;
 	}
 
-	Init();
-
-	while(MainLoop())
-	{
-		if(ProcessingTime())
-		{
-			Tick();
-				
-			Draw();
-			SwapBuffers();
-		}
-	}
+	MainMenu();
 
 	return 0;
 }

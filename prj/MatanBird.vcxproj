@@ -14,10 +14,13 @@
     <ClCompile Include="..\source\ConsoleGraphics.cpp" />
     <ClCompile Include="..\source\Flappy.cpp" />
     <ClCompile Include="..\source\main.cpp" />
+    <ClCompile Include="..\source\Menu.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\source\ConsoleGraphics.h" />
     <ClInclude Include="..\source\Flappy.h" />
+    <ClInclude Include="..\source\Menu.h" />
+    <ClInclude Include="..\source\MenuData.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{8B104776-A5E4-47CE-B1AB-8C1A765B99D6}</ProjectGuid>

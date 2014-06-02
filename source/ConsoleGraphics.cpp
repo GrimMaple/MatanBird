@@ -42,7 +42,7 @@ bool InitConsole(wchar *title)
 	SetConsoleCursorInfo(BackBuffer, &cci);
 	SetConsoleCursorInfo(FrontBuffer, &cci);
 
-	LastProcessTime = timeGetTime();
+	DiscardProcessingTime();
 }
 
 void ClearBackBuffer()
@@ -63,7 +63,7 @@ void SwapBuffers()
 	ClearBackBuffer();
 }
 
-void Write(wchar *buffer)
+void Write(const wchar *buffer)
 {
 	WriteConsole(BackBuffer, buffer, lstrlen(buffer), NULL, NULL);
 }
@@ -81,7 +81,7 @@ void SetPosition(int x, int y)
 	SetConsoleCursorPosition(BackBuffer, point);
 }
 
-void WritePosition(int x, int y, wchar *buffer)
+void WritePosition(int x, int y, const wchar *buffer)
 {
 	SetPosition(x, y);
 	Write(buffer);
@@ -119,9 +119,19 @@ bool ProcessingTime()
 	return false;
 }
 
+void DiscardProcessingTime()
+{
+	LastProcessTime = timeGetTime();
+}
+
 void StopMainLoop()
 {
 	MainLoopStopped = true;
+}
+
+void ContinueMainLoop()
+{
+	MainLoopStopped = false;
 }
 
 bool KeyPressed(char *outKey)
@@ -162,4 +172,12 @@ bool KeySinglePressed(char *outKey)
 
 	memset(Keys, 0, sizeof(Keys));
 	return false;
+}
+
+void DiscardPressedKeys()
+{
+	while( _kbhit() )
+	{
+		int key = getch();
+	}
 }
