@@ -1,3 +1,4 @@
 *.sdf
 /prj/Debug/
 *.suo
+*.opensdf

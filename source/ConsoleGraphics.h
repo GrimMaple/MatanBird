@@ -12,9 +12,11 @@ void Write(const wchar *buffer);
 void WritePosition(int x, int y, const wchar *buffer);
 void WriteSymbol(int x, int y, wchar symbol);
 void SetPosition(int x, int y);
-void SetProcessInterval(uint interval);
+
+void SetConsoleCaption(const wchar *title);
 
 bool ProcessingTime();
+void SetProcessInterval(uint interval);
 void DiscardProcessingTime();
 bool MainLoop();
 void StopMainLoop();

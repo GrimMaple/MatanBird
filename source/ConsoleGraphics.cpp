@@ -81,6 +81,11 @@ void SetPosition(int x, int y)
 	SetConsoleCursorPosition(BackBuffer, point);
 }
 
+void SetConsoleCaption(const wchar *title)
+{
+	SetConsoleTitle(title);
+}
+
 void WritePosition(int x, int y, const wchar *buffer)
 {
 	SetPosition(x, y);

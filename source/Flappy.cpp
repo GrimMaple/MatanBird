@@ -1,11 +1,11 @@
 #include "Flappy.h"
 #include "ConsoleGraphics.h"
+#include "Menu.h"
 
 enum GAME_STATE
 {
 	GS_PLAY = 0,
 	GS_LOST,
-	GS_END
 };
 
 enum BIRD_STATE
@@ -23,6 +23,7 @@ struct Wall
 };
 
 GAME_STATE GameState;
+bool       PlayLoop;
 uint       TickCnt;
 
 float      Y;
@@ -50,7 +51,7 @@ void Play()
 	Init();
 	DiscardProcessingTime();
 
-	while(MainLoop() && GameState != GS_END)
+	while(MainLoop() && PlayLoop)
 	{
 		if(ProcessingTime())
 		{
@@ -86,8 +87,8 @@ void PlayTick()
 	}
 	 
 	wchar title[256];
-	wsprintf(title, L"<- MATAN BIRD -|- You've already taken %d integrals! -|", Score);
-	SetConsoleTitle(title);
+	wsprintf(title, L"<- MATAN BIRD -|- You may consider that you've taken %d integrals! -|", Score);
+	SetConsoleCaption(title);
 
 	Controlls();
 }
@@ -100,7 +101,7 @@ void LostTick()
 		Y = WORLD_HEIGHT - 1;
 
 	if(TickCnt > 50 )
-		GameState = GS_END;
+		PlayLoop = false;
 }
 
 void Controlls()
@@ -112,7 +113,10 @@ void Controlls()
 			PushBird();
 
 		if(key == 27) // escape
-			StopMainLoop();
+		{
+			PauseMenu();
+
+		}
 	}
 }
 
@@ -235,6 +239,7 @@ void Init()
 	InitGame();	
 	InitWalls();
 	GameState = GS_PLAY;
+	PlayLoop = true;
 }
 
 void DrawBird()
