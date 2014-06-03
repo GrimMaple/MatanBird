@@ -6,14 +6,13 @@
 #define BUTTON_ENTER  254
 #define BUTTON_ESCAPE 255
 
-const MenuItem *MenuItems;
-uint           MenuItemsSize;
 uint           SelectedItem;
 
 void InitMenu()
 {
 	SelectedItem = 0;
 	DiscardPressedKeys();
+	DiscardProcessingTime();
 }
 
 bool MenuControlls(const MenuItem *menuItems, int *button)
@@ -65,12 +64,15 @@ void DrawMenu(const MenuItem *menuItems, const uint menuItemsSize)
 
 // *** *** *** MAIN MENU *** *** ***
 void MainMenuAction(int itemId);
+void MainMenuDrawBackground();
+void DrawMatanInFire(int x, int y);
+
+int TickCnt = 0;
 
 void MainMenu()
 {
 	InitMenu();
-	MenuItems = MAIN_MENU_ITEMS;
-	MenuItemsSize = MAIN_MENU_ITEMS_SIZE;
+	SetConsoleCaption(L"<- MATAN BIRD -|- Main Menu -|");
 
 	while(MainLoop())
 	{
@@ -79,7 +81,14 @@ void MainMenu()
 		{
 			MainMenuAction(actionButton);
 		}
+		
+		if(ProcessingTime())
+		{
+			TickCnt++;
+		}
 
+		MainMenuDrawBackground();
+		DrawMatanInFire(20, 10);
 		DrawMenu(MAIN_MENU_ITEMS, MAIN_MENU_ITEMS_SIZE);
 		SwapBuffers();
 	}
@@ -92,6 +101,7 @@ void MainMenuAction(int itemId)
 	case BUTTON_PLAY:
 		Play();
 		InitMenu();
+		SetConsoleCaption(L"<- MATAN BIRD -|- Main Menu -|");
 		break;
 
 	case BUTTON_EXIT:
@@ -99,6 +109,27 @@ void MainMenuAction(int itemId)
 		StopMainLoop();
 		break;
 	}
+}
+
+void MainMenuDrawBackground()
+{
+	for(int i=0; i<24; i++)
+			WritePosition(0, i, MAIN_MENU_BACKGROUND[i]);
+}
+
+void DrawMatanInFire(int x, int y)
+{
+	int phase = TickCnt % 15;
+
+	if(phase < 5)
+		for(int i=0; i<8; i++)
+			WritePosition(x, y+i, MATAN_IN_FIRE1[i]);
+	else if(phase < 10)
+		for(int i=0; i<8; i++)
+			WritePosition(x, y+i, MATAN_IN_FIRE2[i]);
+	else
+		for(int i=0; i<8; i++)
+			WritePosition(x, y+i, MATAN_IF_FIRE3[i]);
 }
 
 // *** *** *** PAUSE MENU *** *** ***
@@ -109,9 +140,8 @@ bool PauseLoop;
 void PauseMenu()
 {
 	InitMenu();
-	MenuItems = PAUSE_MENU_ITEMS;
-	MenuItemsSize = PAUSE_MENU_ITEMS_SIZE;
 	PauseLoop= true;
+	SetConsoleCaption(L"<- MATAN BIRD -|- Pause -|");
 
 	while(MainLoop && PauseLoop)
 	{

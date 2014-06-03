@@ -81,8 +81,15 @@ void SetPosition(int x, int y)
 	SetConsoleCursorPosition(BackBuffer, point);
 }
 
-void SetConsoleCaption(const wchar *title)
+void SetConsoleCaption(wchar *format, ...)
 {
+	va_list ap;
+	wchar   title[256];
+
+	va_start(ap, format);
+	wvsprintf(title, format, ap);
+	va_end(ap);
+	
 	SetConsoleTitle(title);
 }
 

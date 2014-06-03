@@ -85,10 +85,8 @@ void PlayTick()
 		GameState = GS_LOST;
 		TickCnt = 0;
 	}
-	 
-	wchar title[256];
-	wsprintf(title, L"<- MATAN BIRD -|- You may consider that you've taken %d integrals! -|", Score);
-	SetConsoleCaption(title);
+	
+	SetConsoleCaption(L"<- MATAN BIRD -|- You may consider that you've taken %d integrals! -|", Score);
 
 	Controlls();
 }
@@ -190,7 +188,10 @@ void CheckScore()
 bool CheckCollision()
 {
 	if(Y > WORLD_HEIGHT)
+	{
+		Y = WORLD_HEIGHT-1;
 		return true;
+	}
 
 	if(Y < 0)
 		Y = 0;

@@ -13,7 +13,7 @@ void WritePosition(int x, int y, const wchar *buffer);
 void WriteSymbol(int x, int y, wchar symbol);
 void SetPosition(int x, int y);
 
-void SetConsoleCaption(const wchar *title);
+void SetConsoleCaption(wchar *format, ...);
 
 bool ProcessingTime();
 void SetProcessInterval(uint interval);
