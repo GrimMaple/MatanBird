@@ -8,7 +8,7 @@
 #define MAX_SPEED         1.1f
 #define PUSH_VEL          0.57f
 #define PROCESS_INTERVAL  33
-#define PUSHING_TIME      5       // influences only on animation
+#define PUSHING_TIME      8       // influences only on animation
 
 #define WORLD_HEIGHT      25
 #define WORLD_WIDTH       79

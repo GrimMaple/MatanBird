@@ -7,10 +7,12 @@
 #define BUTTON_ESCAPE 255
 
 uint           SelectedItem;
+int            TickCnt;
 
 void InitMenu()
 {
 	SelectedItem = 0;
+	TickCnt = 0;
 	DiscardPressedKeys();
 	DiscardProcessingTime();
 }
@@ -67,8 +69,6 @@ void MainMenuAction(int itemId);
 void MainMenuDrawBackground();
 void DrawMatanInFire(int x, int y);
 
-int TickCnt = 0;
-
 void MainMenu()
 {
 	InitMenu();
@@ -114,7 +114,7 @@ void MainMenuAction(int itemId)
 void MainMenuDrawBackground()
 {
 	for(int i=0; i<24; i++)
-			WritePosition(0, i, MAIN_MENU_BACKGROUND[i]);
+		WritePosition(0, i, MAIN_MENU_BACKGROUND[i]);
 }
 
 void DrawMatanInFire(int x, int y)
@@ -134,6 +134,8 @@ void DrawMatanInFire(int x, int y)
 
 // *** *** *** PAUSE MENU *** *** ***
 void PauseMenuAction(int itemId);
+void DrawPauseMenuBackground();
+void DrawBirdLogo(int x, int y);
 
 bool PauseLoop;
 
@@ -151,6 +153,13 @@ void PauseMenu()
 			PauseMenuAction(actionButton);
 		}
 
+		if(ProcessingTime())
+		{
+			TickCnt++;
+		}
+
+		DrawPauseMenuBackground();
+		DrawBirdLogo(20, 6);
 		DrawMenu(PAUSE_MENU_ITEMS, PAUSE_MENU_ITEMS_SIZE);
 		SwapBuffers();
 	}
@@ -171,4 +180,22 @@ void PauseMenuAction(int itemId)
 		PlayLoop = false;
 		break;
 	}
+}
+
+void DrawPauseMenuBackground()
+{
+	for(int i=0; i<24; i++)
+		WritePosition(0, i, PAUSE_MENU_BACKGROUND[i]);
+}
+
+void DrawBirdLogo(int x, int y)
+{
+	int phase = TickCnt % 60;
+
+	if(phase < 30)
+		for(int i=0; i<14; i++)
+			WritePosition(x, y+i, BIRD1[i]);
+	else
+		for(int i=0; i<14; i++)
+			WritePosition(x, y+i, BIRD2[i]);
 }
