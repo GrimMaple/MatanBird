@@ -119,17 +119,17 @@ void MainMenuDrawBackground()
 
 void DrawMatanInFire(int x, int y)
 {
-	int phase = TickCnt % 15;
+	int phase = TickCnt % 45;
 
-	if(phase < 5)
+	if(phase < 15)
 		for(int i=0; i<8; i++)
 			WritePosition(x, y+i, MATAN_IN_FIRE1[i]);
-	else if(phase < 10)
+	else if(phase < 30)
 		for(int i=0; i<8; i++)
 			WritePosition(x, y+i, MATAN_IN_FIRE2[i]);
 	else
 		for(int i=0; i<8; i++)
-			WritePosition(x, y+i, MATAN_IF_FIRE3[i]);
+			WritePosition(x, y+i, MATAN_IN_FIRE3[i]);
 }
 
 // *** *** *** PAUSE MENU *** *** ***
