@@ -70,6 +70,8 @@ void PlayTick()
 		YSpeed = -MAX_SPEED;
 
 	CheckBirdState();
+	
+	Controlls();
 
 	if(TickCnt % 5 == 0)
 	{
@@ -87,8 +89,6 @@ void PlayTick()
 	}
 	
 	SetConsoleCaption(L"<- MATAN BIRD -|- You may consider that you've taken %d integrals! -|", Score);
-
-	Controlls();
 }
 
 void LostTick()
