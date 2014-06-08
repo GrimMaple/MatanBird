@@ -1,6 +1,7 @@
 #include "Flappy.h"
 #include "ConsoleGraphics.h"
 #include "Menu.h"
+#include <stdio.h>
 
 enum GAME_STATE
 {
@@ -26,12 +27,16 @@ GAME_STATE GameState;
 bool       PlayLoop;
 uint       TickCnt;
 
+extern HiScoreEntry HiScores[10];
+
 float      Y;
 float      YSpeed;
 BIRD_STATE BirdState;
 
 int CntAfterPushed = 0;
 int Score = 0;
+
+int WingsState = 0;
 
 Wall  Walls[WALLS_AMOUNT];
 
@@ -45,6 +50,50 @@ void CheckBirdState();
 void MoveWalls();
 void Controlls();
 void PushBird();
+void SaveScores();
+void LostEnd();
+
+void SaveScores()
+{
+	FILE *f = fopen("scores.dat", "wb");
+	if (f == NULL)
+		return;
+
+	for (int i = 0; i < 10; i++)
+	{
+		fwrite(&HiScores[i], sizeof(int), 1, f);
+		char buffer[256];
+		wcstombs(buffer, HiScores[i].name, 256);
+		fwrite(buffer, sizeof(char), strlen(buffer) + 1, f);
+	}
+
+	fclose(f);
+}
+
+int CompareScores(const void * a, const void * b)
+{
+	HiScoreEntry entry1 = *(HiScoreEntry*)a;
+	HiScoreEntry entry2 = *(HiScoreEntry*)b;
+	return (entry1.score > entry2.score) ? -1 : 1;
+}
+
+void SortScores()
+{
+	qsort(HiScores, 10, sizeof(HiScoreEntry), CompareScores);
+}
+
+void LostEnd()
+{
+	if (Score > HiScores[9].score)
+	{
+		HiScores[9].score = Score;
+		wsprintf(HiScores[9].name, L"Player");
+		SortScores();
+		SaveScores();
+	}
+
+	PlayLoop = false;
+}
 
 void Play()
 {
@@ -87,6 +136,9 @@ void PlayTick()
 		GameState = GS_LOST;
 		TickCnt = 0;
 	}
+
+	if (BirdState == BS_PUSH)
+		WingsState++;
 	
 	SetConsoleCaption(L"<- MATAN BIRD -|- You may consider that you've taken %d integrals! -|", Score);
 }
@@ -98,8 +150,8 @@ void LostTick()
 	if(Y >= WORLD_HEIGHT)
 		Y = WORLD_HEIGHT - 1;
 
-	if(TickCnt > 50 )
-		PlayLoop = false;
+	if (TickCnt > 50)
+		LostEnd();
 }
 
 void Controlls()
@@ -113,7 +165,6 @@ void Controlls()
 		if(key == 27) // escape
 		{
 			PauseMenu();
-
 		}
 	}
 }
@@ -252,7 +303,9 @@ void DrawBird()
 		break;
 
 	case BS_PUSH:
-		WritePosition(BIRD_X, Y, L"vvv");
+		if (WingsState % 4 < 2)
+			WritePosition(BIRD_X, Y, L"vvv");
+		else WritePosition(BIRD_X, Y, L"^v^");
 		break;
 
 	case BS_LOST:

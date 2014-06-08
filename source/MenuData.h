@@ -15,13 +15,15 @@ struct MenuItem
 
 // *** *** *** MAIN MENU *** *** ***
 #define BUTTON_PLAY 0
-#define BUTTON_EXIT 1
+#define BUTTON_SCORE 1
+#define BUTTON_EXIT 2
 
 const MenuItem MAIN_MENU_ITEMS[] = 
 {
 
-/*0*/ {L"Play", 5, 2,  -1,            BUTTON_EXIT, -1,  -1},
-/*1*/ {L"Exit", 70, 2,  BUTTON_PLAY,  -1,          -1,  -1},
+/*0*/{ L"Play", 5, 2, -1,  BUTTON_SCORE,    -1, -1 },
+/*1*/{ L"HI-SCORE", 34, 2, BUTTON_PLAY,   BUTTON_EXIT, -1, -1 },
+/*2*/ {L"Exit", 70, 2,     BUTTON_SCORE,    -1, -1,  -1},
 
 };
 const uint MAIN_MENU_ITEMS_SIZE = _MENU_ITEMS_NUMBER(MAIN_MENU_ITEMS);
@@ -29,9 +31,9 @@ const uint MAIN_MENU_ITEMS_SIZE = _MENU_ITEMS_NUMBER(MAIN_MENU_ITEMS);
 const wchar MAIN_MENU_BACKGROUND[24][79] =
 {
 	L"                                                                              ",
-	L"   +------+                                                         +------+  ",
-	L"   | PLAY |                                                         | EXIT |  ",
-	L"   +------+                                                         +------+  ",
+	L"   +------+                     +----------+                        +------+  ",
+	L"   | PLAY |                     | HI-SCORE |                        | EXIT |  ",
+	L"   +------+                     +----------+                        +------+  ",
 	L"                                                                              ",
 	L"                                                                              ",
 	L"                                                                              ",
@@ -192,6 +194,44 @@ const wchar BIRD2[14][50] =
 	L"       \\   `  ; \\   \\      \\   `  ; ",
 	L"        :   \\ |  \\   \\ |    :   \\ | ",
 	L"         '---\"    '---\"      '---\"  ",
+};
+
+
+// *** *** *** SCORE ITEMS *** *** ***
+
+const wchar SCORE_MENU_BACKGROUND[24][79] =
+{
+	L"                                                                              ",
+	L"                                  +------+                                    ",
+	L"                                  | EXIT |                                    ",
+	L"                                  +------+                                    ",
+	L"                                                                              ",
+	L"                                                                              ",
+	L"                                                                              ",
+	L"                                                                              ",
+	L"                                                                              ",
+	L"                                                                              ",
+	L"                                                                              ",
+	L"                                                                              ",
+	L"                                                                              ",
+	L"                                                                              ",
+	L"                                                                              ",
+	L"                                                                              ",
+	L"                                                                              ",
+	L"                                                                              ",
+	L"                                                                              ",
+	L"                                                                              ",
+	L"                                                                              ",
+	L"                                                                              ",
+	L"                                                                              ",
+	L"                                                                              ",
+};
+
+#define BUTTON_SCORE_EXIT 0
+
+const MenuItem SCORE_MENU_ITEMS[] =
+{
+	/*0*/{ L"Exit", 36, 2, -1, -1, -1, -1 },
 };
 
 /* LOGO

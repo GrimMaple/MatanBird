@@ -3,11 +3,19 @@
 #include "MenuData.h"
 #include "Flappy.h"
 
+#include <stdio.h>
+
 #define BUTTON_ENTER  254
 #define BUTTON_ESCAPE 255
 
 uint           SelectedItem;
 int            TickCnt;
+
+HiScoreEntry HiScores[10];
+
+void ScoreMenu();
+void LoadScores();
+void GenerateScores();
 
 void InitMenu()
 {
@@ -63,6 +71,63 @@ void DrawMenu(const MenuItem *menuItems, const uint menuItemsSize)
 	}
 };
 
+void LoadScores()
+{
+	wchar_t brk = '\0';
+	FILE *f = fopen("scores.dat", "rb");
+	if (f == NULL)
+	{
+		GenerateScores();
+		LoadScores();
+		return;
+	}
+	int score;
+	char buffer[256];
+	int s = 0;
+	for (int i = 0; i < 10; i++)
+	{
+		s = 0;
+		fread(&score, sizeof(int), 1, f);
+		do
+		{
+			fread(buffer+s, sizeof(char), 1, f);
+			s++;
+		} while (*(buffer + s - 1) != 0);
+		HiScores[i].score = score;
+		wchar_t str[256];
+		mbstowcs(str, buffer, 256);
+		lstrcpyW(HiScores[i].name, str);
+	}
+}
+
+void GenerateScores()
+{
+	char names[10][256];
+	int scores[10] = { 295680, 10000, 80000, 7000, 5000, 2000, 1000, 500, 250, 100 };
+	strcpy(names[0], "Kozhukhov I.B.");
+	strcpy(names[1], "Sokolova T.V.");
+	strcpy(names[2], "Alfimov G.V.");
+	strcpy(names[3], "Khakhalin S.Y.");
+	strcpy(names[4], "Shevchenko A.I.");
+	strcpy(names[5], "Nazarov M.N.");
+	strcpy(names[6], "Kalinnikova S.S.");
+	strcpy(names[7], "Reshetnikov A.V.");
+	strcpy(names[8], "Rzhavinskaya E.V.");
+	strcpy(names[9], "Stukalov");
+
+	FILE *f = fopen("scores.dat", "wb");
+	if (f == NULL)
+		return;
+
+	for (int i = 0; i < 10; i++)
+	{
+		fwrite(&scores[i], sizeof(int), 1, f);
+		fwrite(names[i], sizeof(char), strlen(names[i]) + 1, f);
+	}
+
+	fclose(f);
+}
+
 
 // *** *** *** MAIN MENU *** *** ***
 void MainMenuAction(int itemId);
@@ -71,6 +136,7 @@ void DrawMatanInFire(int x, int y);
 
 void MainMenu()
 {
+	LoadScores();
 	InitMenu();
 	SetConsoleCaption(L"<- MATAN BIRD -|- Main Menu -|");
 
@@ -102,6 +168,10 @@ void MainMenuAction(int itemId)
 		Play();
 		InitMenu();
 		SetConsoleCaption(L"<- MATAN BIRD -|- Main Menu -|");
+		break;
+
+	case BUTTON_SCORE:
+		ScoreMenu();
 		break;
 
 	case BUTTON_EXIT:
@@ -198,4 +268,60 @@ void DrawBirdLogo(int x, int y)
 	else
 		for(int i=0; i<14; i++)
 			WritePosition(x, y+i, BIRD2[i]);
+}
+
+
+// *** *** *** SCORE MENU *** *** ***
+void ScoreMenuDrawBackground();
+void ScoreMenuAction(int itemId);
+
+void ScoreMenu()
+{
+	InitMenu();
+	SetConsoleCaption(L"<- MATAN BIRD -|- HI-SCORE -|");
+
+	while (MainLoop())
+	{
+		int actionButton;
+		if (MenuControlls(SCORE_MENU_ITEMS, &actionButton))
+		{
+			ScoreMenuAction(actionButton);
+		}
+
+		if (ProcessingTime())
+		{
+			TickCnt++;
+		}
+
+		ScoreMenuDrawBackground();
+		DrawMenu(SCORE_MENU_ITEMS, MAIN_MENU_ITEMS_SIZE);
+		SwapBuffers();
+	}
+}
+
+void ScoreMenuDrawBackground()
+{
+	for (int i = 0; i<24; i++)
+		WritePosition(0, i, SCORE_MENU_BACKGROUND[i]);
+	int t = 4;
+
+	for (int i = 0; i < 10; i++)
+	{
+		wchar_t buffer[256];
+		wsprintf(buffer, L"%d. %s", i+1, HiScores[i].name);
+		WritePosition(2, t, buffer);
+		wsprintf(buffer, L"%d", HiScores[i].score);
+		WritePosition(60, t, buffer);
+		t += 2;
+	}
+}
+
+void ScoreMenuAction(int itemId)
+{
+	switch (itemId)
+	{
+	case BUTTON_SCORE_EXIT:
+		MainMenu();
+		break;
+	}
 }

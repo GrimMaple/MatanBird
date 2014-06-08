@@ -18,6 +18,14 @@
 #define WALL_DIST         10
 #define WALLS_AMOUNT      8
 
+typedef struct HiScoreEntry
+{
+	wchar_t name[256];
+	int score;
+};
+
+extern HiScoreEntry HiScores[10];
+
 void Play();
 
 #endif
