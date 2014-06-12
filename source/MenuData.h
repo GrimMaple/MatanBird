@@ -234,6 +234,8 @@ const MenuItem SCORE_MENU_ITEMS[] =
 	/*0*/{ L"Exit", 36, 2, -1, -1, -1, -1 },
 };
 
+const uint SCORE_MENU_ITEMS_SIZE = _MENU_ITEMS_NUMBER(SCORE_MENU_ITEMS);
+
 /* LOGO
  _____ ______   ________  _________  ________  ________           ________  ___  ________  ________     
 |\   _ \  _   \|\   __  \|\___   ___\\   __  \|\   ___  \        |\   __  \|\  \|\   __  \|\   ___ \    

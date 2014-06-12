@@ -103,7 +103,7 @@ void LoadScores()
 void GenerateScores()
 {
 	char names[10][256];
-	int scores[10] = { 295680, 10000, 80000, 7000, 5000, 2000, 1000, 500, 250, 100 };
+	int scores[10] = { 295680, 10000, 8000, 7000, 5000, 2000, 1000, 500, 250, 100 };
 	strcpy(names[0], "Kozhukhov I.B.");
 	strcpy(names[1], "Sokolova T.V.");
 	strcpy(names[2], "Alfimov G.V.");
@@ -294,7 +294,7 @@ void ScoreMenu()
 		}
 
 		ScoreMenuDrawBackground();
-		DrawMenu(SCORE_MENU_ITEMS, MAIN_MENU_ITEMS_SIZE);
+		DrawMenu(SCORE_MENU_ITEMS, SCORE_MENU_ITEMS_SIZE);
 		SwapBuffers();
 	}
 }
