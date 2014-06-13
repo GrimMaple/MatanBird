@@ -24,6 +24,7 @@ typedef struct HiScoreEntry
 	int score;
 };
 
+extern int Score;
 extern HiScoreEntry HiScores[10];
 
 void Play();

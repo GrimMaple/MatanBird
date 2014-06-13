@@ -236,6 +236,41 @@ const MenuItem SCORE_MENU_ITEMS[] =
 
 const uint SCORE_MENU_ITEMS_SIZE = _MENU_ITEMS_NUMBER(SCORE_MENU_ITEMS);
 
+
+
+// *** *** *** INPUT ITEMS *** *** ***
+
+const wchar INPUT_MENU_BACKGROUND[24][79] =
+{
+	L"                                                                              ",
+	L"                              +------------+                                  ",
+	L"                              | Enter name |                                  ",
+	L"                              +------------+                                  ",
+	L"                                                                              ",
+	L"                                                                              ",
+	L"                                                                              ",
+	L"                                                                              ",
+	L"                                                                              ",
+	L"       >                                                                      ",
+	L"                                                                              ",
+	L"                                                                              ",
+	L"                                                                              ",
+	L"                                                                              ",
+	L"                                                                              ",
+	L"                                                                              ",
+	L"                                                                              ",
+	L"                                                                              ",
+	L"                                                                              ",
+	L"                                                                              ",
+	L"                                                                              ",
+	L"                                                                              ",
+	L"                                                                              ",
+	L"                                                                              ",
+};
+
+char Name[256];
+int NameLength = 0;
+
 /* LOGO
  _____ ______   ________  _________  ________  ________           ________  ___  ________  ________     
 |\   _ \  _   \|\   __  \|\___   ___\\   __  \|\   ___  \        |\   __  \|\  \|\   __  \|\   ___ \    

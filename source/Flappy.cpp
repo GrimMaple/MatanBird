@@ -34,7 +34,7 @@ float      YSpeed;
 BIRD_STATE BirdState;
 
 int CntAfterPushed = 0;
-int Score = 0;
+extern int Score = 0;
 
 int WingsState = 0;
 
@@ -53,45 +53,8 @@ void PushBird();
 void SaveScores();
 void LostEnd();
 
-void SaveScores()
-{
-	FILE *f = fopen("scores.dat", "wb");
-	if (f == NULL)
-		return;
-
-	for (int i = 0; i < 10; i++)
-	{
-		fwrite(&HiScores[i], sizeof(int), 1, f);
-		char buffer[256];
-		wcstombs(buffer, HiScores[i].name, 256);
-		fwrite(buffer, sizeof(char), strlen(buffer) + 1, f);
-	}
-
-	fclose(f);
-}
-
-int CompareScores(const void * a, const void * b)
-{
-	HiScoreEntry entry1 = *(HiScoreEntry*)a;
-	HiScoreEntry entry2 = *(HiScoreEntry*)b;
-	return (entry1.score > entry2.score) ? -1 : 1;
-}
-
-void SortScores()
-{
-	qsort(HiScores, 10, sizeof(HiScoreEntry), CompareScores);
-}
-
 void LostEnd()
 {
-	if (Score > HiScores[9].score)
-	{
-		HiScores[9].score = Score;
-		wsprintf(HiScores[9].name, L"Player");
-		SortScores();
-		SaveScores();
-	}
-
 	PlayLoop = false;
 }
 

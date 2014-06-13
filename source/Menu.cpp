@@ -10,12 +10,43 @@
 
 uint           SelectedItem;
 int            TickCnt;
+extern int     Score;
 
 HiScoreEntry HiScores[10];
 
 void ScoreMenu();
 void LoadScores();
 void GenerateScores();
+void InputMenu();
+
+void SaveScores()
+{
+	FILE *f = fopen("scores.dat", "wb");
+	if (f == NULL)
+		return;
+
+	for (int i = 0; i < 10; i++)
+	{
+		fwrite(&HiScores[i].score, sizeof(int), 1, f);
+		char buffer[256];
+		wcstombs(buffer, HiScores[i].name, 256);
+		fwrite(buffer, sizeof(char), strlen(buffer) + 1, f);
+	}
+
+	fclose(f);
+}
+
+int CompareScores(const void * a, const void * b)
+{
+	HiScoreEntry entry1 = *(HiScoreEntry*)a;
+	HiScoreEntry entry2 = *(HiScoreEntry*)b;
+	return (entry1.score > entry2.score) ? -1 : 1;
+}
+
+void SortScores()
+{
+	qsort(HiScores, 10, sizeof(HiScoreEntry), CompareScores);
+}
 
 void InitMenu()
 {
@@ -166,6 +197,10 @@ void MainMenuAction(int itemId)
 	{
 	case BUTTON_PLAY:
 		Play();
+		if (Score > HiScores[9].score)
+		{
+			InputMenu();
+		}
 		InitMenu();
 		SetConsoleCaption(L"<- MATAN BIRD -|- Main Menu -|");
 		break;
@@ -323,5 +358,80 @@ void ScoreMenuAction(int itemId)
 	case BUTTON_SCORE_EXIT:
 		MainMenu();
 		break;
+	}
+}
+
+// *** *** *** INPUT MENU *** *** ***
+void InputMenuDrawBackground();
+void InputMenuAction();
+void UpdateScores();
+
+void InputMenu()
+{
+	InitMenu();
+	SetConsoleCaption(L"<- MATAN BIRD -|- HI-SCORE -|");
+
+	while (MainLoop())
+	{
+		int actionButton;
+
+		InputMenuAction();
+
+		if (ProcessingTime())
+		{
+			TickCnt++;
+		}
+
+		InputMenuDrawBackground();
+		
+		SwapBuffers();
+	}
+}
+
+void InputMenuDrawBackground()
+{
+	for (int i = 0; i<24; i++)
+		WritePosition(0, i, INPUT_MENU_BACKGROUND[i]);
+	wchar_t buff[256];
+	mbstowcs(buff, Name, 256);
+	WritePosition(9, 9, buff);
+}
+
+void InputMenuAction()
+{
+	char key;
+	if (KeySinglePressed(&key))
+	{
+		if ((key >= 'a' && key <= 'z') || (key >= 'A' && key <= 'Z'))
+		{
+			Name[NameLength] = key;
+			NameLength++;
+			Name[NameLength] = '\0';
+		}
+		if (key == 8)	// Backspace
+		{
+			if (NameLength == 0)
+				return;
+			NameLength--;
+			Name[NameLength] = '\0';
+		}
+		if (key == 13)	// Enter
+		{
+			UpdateScores();
+			MainMenu();
+		}
+	}
+}
+
+void UpdateScores()
+{
+	if (Score > HiScores[9].score)
+	{
+		HiScores[9].score = Score;
+		wchar_t buff[256];
+		mbstowcs(buff, Name, 256);
+		wsprintf(HiScores[9].name, buff);
+		SortScores();
+		SaveScores();
 	}
 }
