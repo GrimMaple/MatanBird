@@ -164,6 +164,7 @@ void GenerateScores()
 void MainMenuAction(int itemId);
 void MainMenuDrawBackground();
 void DrawMatanInFire(int x, int y);
+void DrawVersionInfo(int x, int y);
 
 void MainMenu()
 {
@@ -187,6 +188,7 @@ void MainMenu()
 		MainMenuDrawBackground();
 		DrawMatanInFire(20, 10);
 		DrawMenu(MAIN_MENU_ITEMS, MAIN_MENU_ITEMS_SIZE);
+		DrawVersionInfo(52, 19);
 		SwapBuffers();
 	}
 }
@@ -235,6 +237,12 @@ void DrawMatanInFire(int x, int y)
 	else
 		for(int i=0; i<8; i++)
 			WritePosition(x, y+i, MATAN_IN_FIRE3[i]);
+}
+
+void DrawVersionInfo(int x, int y)
+{
+	for (int i = 0; i<6; i++)
+		WritePosition(x, y + i, VERSION[i]);
 }
 
 // *** *** *** PAUSE MENU *** *** ***

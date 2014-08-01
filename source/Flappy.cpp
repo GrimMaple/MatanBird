@@ -254,6 +254,14 @@ void Init()
 	InitGame();	
 	InitWalls();
 	GameState = GS_PLAY;
+
+	for (int i = 0; i < 45; i++)
+	{
+		Y = START_Y;
+		PlayTick();
+		YSpeed = 0;
+	}
+
 	PlayLoop = true;
 }
 
