@@ -86,7 +86,7 @@ bool MenuControlls(const MenuItem *menuItems, int *button)
 			return true;
 		}
 	}
-	return 0;
+	return false;
 }
 
 void DrawMenu(const MenuItem *menuItems, const uint menuItemsSize)
