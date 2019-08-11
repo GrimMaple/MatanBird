@@ -43,6 +43,8 @@ bool InitConsole(wchar *title)
 	SetConsoleCursorInfo(FrontBuffer, &cci);
 
 	DiscardProcessingTime();
+
+   return true;
 }
 
 void ClearBackBuffer()
